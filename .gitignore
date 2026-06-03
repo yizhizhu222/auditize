@@ -1,0 +1,20 @@
+# ── 只跟踪 CLI 相关文件 ──────────────────────────────
+# 其他目录是网站和后台服务，不属于 CLI 仓库
+
+# Python 构建产物
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# TruffleKit 本地状态
+.truffle/
+
+# 开发/系统文件
+.vscode/
+.idea/
+*.swp
+.env
+.DS_Store
