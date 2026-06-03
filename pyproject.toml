@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "trufflekit"
-version = "0.1.0"
-description = "AI 项目确定性安全审查工具 — 告诉你从哪里看起，而不是丢给你一个列表"
+name = "truffle-scan"
+version = "0.1.1"
+description = "Deterministic security scanner for AI-generated projects. Scan any project, get a prioritized action plan — so you review 3 files instead of 300."
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT" }

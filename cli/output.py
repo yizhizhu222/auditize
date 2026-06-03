@@ -45,10 +45,8 @@ def _grade_color(grade: str) -> str:
 # ── Banner ──────────────────────────────────────────────────────
 
 def print_banner():
-    """打印品牌标识——粉猪猪"""
-    print(f"   🐷    ◕ ‿ ◕   TruffleKit v{__version__}")
-    print(f"       （   ）   确定性审查 · 22 条规则")
-    print(f"         ω      Zero AI · Open Source")
+    """打印品牌标识"""
+    print(f"  TruffleKit v{__version__}  —  确定性安全审查  ·  22 条规则")
     print()
 
 

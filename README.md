@@ -1,37 +1,48 @@
-# 🍄 TruffleKit CLI
+# TruffleKit CLI
 
-**AI 项目确定性安全审查工具 — 告诉你要从哪里看起，而不是丢给你一个列表。**
+**Deterministic security scanner for AI-generated projects.**
+
+Scan any codebase, get a prioritized action plan — so you review 3 files instead of 300.
 
 ```bash
-pip install trufflekit
+pip install truffle-scan
 truffle scan . --plan
 ```
 
 ---
 
-## 快速开始
+## Quick Start
 
 ```bash
-# 安装
-pip install trufflekit
-
-# 扫描你的项目
+# Scan your project
 cd your-ai-project
 truffle scan .
 
-# 查看行动计划
+# Get an action plan
 truffle scan . --plan
 
-# 查看规则详解
+# Learn about a rule
 truffle explain SEC-001
+
+# Mark issues as fixed
+truffle fix .
 ```
 
-## 文档
+## Why TruffleKit?
 
-- [CLI 使用说明](cli/README.md) — 所有命令和选项
-- [规则库](cli/rules/README.md) — 22 条规则的开源文档
-- [发布指南](cli/PUBLISH.md) — 如何发布到 PyPI
+- **22 deterministic rules** — no AI, no hallucinations, no black box
+- **OWASP-referenced** — every rule links to industry standards
+- **Action plan mode** — tells you exactly what to fix, in what order
+- **Fix tracking** — mark issues as fixed, track progress over time
+- **Zero false positives** — prefer false negatives over false alarms
+- **Open source rules** — all rules are auditable in `cli/rules/`
 
-## 声明
+## Documentation
 
-确定性规则匹配，无 AI 幻觉，每条结果都可在对应行号处自行验证。
+- [CLI Reference](cli/README.md)
+- [Rule Library](cli/rules/README.md) — all 22 rules documented
+- [Publishing Guide](cli/PUBLISH.md)
+
+## License
+
+MIT
