@@ -24,10 +24,10 @@
 
 | 文件 | 变更 |
 |------|------|
-| `platform-backend/app/main.py` | 🔧 所有 HTML/SW 响应添加 no-cache 头 + CDN-Cache-Control |
-| `Nexus AI/vite.config.ts` | 🔧 新增 `skipWaiting` + `clientsClaim` + `injectRegister: 'inline'` |
-| `Nexus AI/src/App.tsx` | 🔧 新增 SW 更新监听 + 页面 focus 自动检测 |
-| `Nexus AI/index.html` | 🔧 添加 `Cache-Control` / `Pragma` / `Expires` meta 标签 |
+| `website/backend/app/main.py` | 🔧 所有 HTML/SW 响应添加 no-cache 头 + CDN-Cache-Control |
+| `website/frontend/vite.config.ts` | 🔧 新增 `skipWaiting` + `clientsClaim` + `injectRegister: 'inline'` |
+| `website/frontend/src/App.tsx` | 🔧 新增 SW 更新监听 + 页面 focus 自动检测 |
+| `website/frontend/index.html` | 🔧 添加 `Cache-Control` / `Pragma` / `Expires` meta 标签 |
 
 ---
 
@@ -80,8 +80,8 @@
 
 | 文件 | 变更 |
 |------|------|
-| `Nexus AI/src/components/LandingPage.tsx` | 🔄 重写 — 增加 7 个新 section，统计栏/定价/FAQ/合作等 |
-| `Nexus AI/src/index.css` | 🔧 新增 `fadeIn` / `fadeInUp` / `pulseGlow` 关键帧动画 |
+| `website/frontend/src/components/LandingPage.tsx` | 🔄 重写 — 增加 7 个新 section，统计栏/定价/FAQ/合作等 |
+| `website/frontend/src/index.css` | 🔧 新增 `fadeIn` / `fadeInUp` / `pulseGlow` 关键帧动画 |
 
 ---
 
@@ -120,9 +120,9 @@
 
 | 文件 | 变更 |
 |------|------|
-| `platform-backend/app/scanner/static_analyzer.py` | 🔄 重写 — 新增 CodeQualityAnalyzer + 扫描结果扩展 |
-| `platform-backend/app/scanner/reporter.py` | 🔄 重写 — 双评分 + 质量板块 + 综合裁决 |
-| `Nexus AI/src/components/SafetyReport.tsx` | 🔄 重写 — 双仪表盘 + Code Quality 独立区域 |
+| `website/backend/app/scanner/static_analyzer.py` | 🔄 重写 — 新增 CodeQualityAnalyzer + 扫描结果扩展 |
+| `website/backend/app/scanner/reporter.py` | 🔄 重写 — 双评分 + 质量板块 + 综合裁决 |
+| `website/frontend/src/components/SafetyReport.tsx` | 🔄 重写 — 双仪表盘 + Code Quality 独立区域 |
 
 ---
 
@@ -144,7 +144,7 @@
 
 | 文件 | 变更 |
 |------|------|
-| `platform-backend/app/auth/auth.py` | 🔧 `ACCESS_TOKEN_EXPIRE_HOURS = 168` |
+| `website/backend/app/auth/auth.py` | 🔧 `ACCESS_TOKEN_EXPIRE_HOURS = 168` |
 
 ---
 
@@ -167,16 +167,16 @@
 
 | 文件 | 变更 |
 |------|------|
-| `platform-backend/app/auth/auth.py` | 🔧 邮箱验证、登录锁定、验证码端点、/me 返回 email_verified |
-| `platform-backend/app/email_utils.py` | 🆕 SMTP 邮件发送工具（smtplib），配置缺失降级 |
-| `platform-backend/app/db.py` | 🆕 `verification_codes` + `login_attempts` 表 + 字段 |
-| `platform-backend/.env` | ➕ SMTP 配置注释 + ADMIN_PASSWORD 注释 |
-| `Nexus AI/src/components/Login.tsx` | 🔧 注册后验证码输入界面、验证邮箱模式 |
-| `Nexus AI/src/components/SettingsPage.tsx` | 🔧 显示邮箱验证状态、发送/输入验证码 |
+| `website/backend/app/auth/auth.py` | 🔧 邮箱验证、登录锁定、验证码端点、/me 返回 email_verified |
+| `website/backend/app/email_utils.py` | 🆕 SMTP 邮件发送工具（smtplib），配置缺失降级 |
+| `website/backend/app/db.py` | 🆕 `verification_codes` + `login_attempts` 表 + 字段 |
+| `website/backend/.env` | ➕ SMTP 配置注释 + ADMIN_PASSWORD 注释 |
+| `website/frontend/src/components/Login.tsx` | 🔧 注册后验证码输入界面、验证邮箱模式 |
+| `website/frontend/src/components/SettingsPage.tsx` | 🔧 显示邮箱验证状态、发送/输入验证码 |
 
 ### SMTP 配置
 
-在 `platform-backend/.env` 中取消注释并填入：
+在 `website/backend/.env` 中取消注释并填入：
 
 ```ini
 SMTP_HOST=smtp.gmail.com
@@ -206,7 +206,7 @@ SMTP_PASS=your-app-password
 
 | 问题 | 文件 | 修复 |
 |------|------|------|
-| 前端 16 个文件、所有 `fetch()` 均无超时 | `Nexus AI/src/lib/api.ts` | 新建 `apiFetch()` 封装，默认 **15s 超时**，统一 JSON 解析和错误处理 |
+| 前端 16 个文件、所有 `fetch()` 均无超时 | `website/frontend/src/lib/api.ts` | 新建 `apiFetch()` 封装，默认 **15s 超时**，统一 JSON 解析和错误处理 |
 | 静默空 `catch {}` 吞掉网络错误 | 8 个组件 | 全部加上 `console.error()` 日志 |
 | `App.tsx` 中 `res.json()` 未检查 `res.ok` | `App.tsx` | 改用 `apiFetch` 自动处理 |
 | 日志文件无限增长 | `main.py:60` | `FileHandler` → `RotatingFileHandler`（10MB × 5 份轮转） |
@@ -220,23 +220,23 @@ SMTP_PASS=your-app-password
 
 | 文件 | 变更 |
 |------|------|
-| `platform-backend/app/admin_app.py` | 🔧 `.env` 路径修复 |
-| `platform-backend/app/main.py` | 🔧 CORS 默认值清理、admin 密码可配置、日志轮转 |
-| `platform-backend/app/db.py` | 🔧 `PRAGMA foreign_keys` finally 保护 |
-| `platform-backend/app/auth/auth.py` | 🔧 bcrypt 密码哈希 + 强度校验 + 登录限速 |
-| `platform-backend/requirements.txt` | ➕ `bcrypt>=4.2.0` |
-| `Nexus AI/src/lib/api.ts` | 🆕 `apiFetch()` 超时封装 |
-| `Nexus AI/src/App.tsx` | 🔧 改用 apiFetch，修复错误处理 |
-| `Nexus AI/src/components/Login.tsx` | 🔧 改用 apiFetch，保留错误消息 |
-| `Nexus AI/src/components/MainPage.tsx` | 🔧 空 catch 加日志 |
-| `Nexus AI/src/components/Sidebar.tsx` | 🔧 3 处空 catch 加日志 |
-| `Nexus AI/src/components/AdminPage.tsx` | 🔧 2 处空 catch 加日志 |
-| `Nexus AI/src/components/TaskHistory.tsx` | 🔧 2 处空 catch 加日志 |
-| `Nexus AI/src/components/AssetLibrary.tsx` | 🔧 2 处空 catch 加日志 |
-| `Nexus AI/src/components/SettingsPage.tsx` | 🔧 空 catch 加日志 |
-| `Nexus AI/vite.config.ts` | 🔧 PWA 配置修复 |
-| `Nexus AI/tsconfig.app.json` | 🔧 TypeScript 严格模式 |
-| `start.sh` | 🔧 路径使用绝对引用，Tunnel 等待检测 |
+| `website/backend/app/admin_app.py` | 🔧 `.env` 路径修复 |
+| `website/backend/app/main.py` | 🔧 CORS 默认值清理、admin 密码可配置、日志轮转 |
+| `website/backend/app/db.py` | 🔧 `PRAGMA foreign_keys` finally 保护 |
+| `website/backend/app/auth/auth.py` | 🔧 bcrypt 密码哈希 + 强度校验 + 登录限速 |
+| `website/backend/requirements.txt` | ➕ `bcrypt>=4.2.0` |
+| `website/frontend/src/lib/api.ts` | 🆕 `apiFetch()` 超时封装 |
+| `website/frontend/src/App.tsx` | 🔧 改用 apiFetch，修复错误处理 |
+| `website/frontend/src/components/Login.tsx` | 🔧 改用 apiFetch，保留错误消息 |
+| `website/frontend/src/components/MainPage.tsx` | 🔧 空 catch 加日志 |
+| `website/frontend/src/components/Sidebar.tsx` | 🔧 3 处空 catch 加日志 |
+| `website/frontend/src/components/AdminPage.tsx` | 🔧 2 处空 catch 加日志 |
+| `website/frontend/src/components/TaskHistory.tsx` | 🔧 2 处空 catch 加日志 |
+| `website/frontend/src/components/AssetLibrary.tsx` | 🔧 2 处空 catch 加日志 |
+| `website/frontend/src/components/SettingsPage.tsx` | 🔧 空 catch 加日志 |
+| `website/frontend/vite.config.ts` | 🔧 PWA 配置修复 |
+| `website/frontend/tsconfig.app.json` | 🔧 TypeScript 严格模式 |
+| `website/start.sh` | 🔧 路径使用绝对引用，Tunnel 等待检测 |
 
 ### 依赖变更
 
@@ -255,7 +255,7 @@ SMTP_PASS=your-app-password
 | **PWA 支持** | `vite-plugin-pwa` 集成，Service Worker 离线缓存，manifest.webmanifest，手机可添加到主屏幕 |
 | **通知系统** | 后端 `notifications` 表 + API，feature request 审核时自动创建通知，前端铃铛图标 + 红点 badge + 30s 轮询 + 下拉面板 |
 | **端到端引导导览** | 5 步 GuidedTour（欢迎→描述→生成→安全→团队），替代旧静态 checklist，支持上一步/跳过 |
-| **项目结构整理** | 根目录从 14 个文件精简到 6 个，deploy/、docs/、assets/ 分类管理 |
+| **项目结构整理** | 根目录从 14 个文件精简到 6 个，website/deploy/、docs/、website/assets/ 分类管理 |
 
 ### UX 改进
 
@@ -282,24 +282,24 @@ SMTP_PASS=your-app-password
 | `app/api/notifications.py` | 🆕 新建 — 通知 CRUD API (list/unread-count/mark-read/read-all) |
 | `app/api/team.py` | review_request() 审核时自动创建通知给提交者 |
 | `app/main.py` | 注册 notifications_router |
-| `Nexus AI/package.json` | 🆕 + vite-plugin-pwa |
-| `Nexus AI/vite.config.ts` | 🆕 PWA 插件配置 (manifest + SW + runtimeCaching) |
-| `Nexus AI/index.html` | 🆕 manifest / theme-color / apple-mobile-web-app meta |
-| `Nexus AI/public/pwa-icon.svg` | 🆕 PWA 图标 (512x512 pig logo + 星星 + 盾牌) |
-| `Nexus AI/src/components/Sidebar.tsx` | 🔄 重写：通知铃铛 + 未读红点 + 下拉面板 + 角色过滤导航 |
-| `Nexus AI/src/components/Dashboard.tsx` | 🆕 通知轮询 (30s) + unreadCount 传递 |
-| `Nexus AI/src/components/MainPage.tsx` | 🔄 GettingStartedBanner → GuidedTour (5步导览) |
-| `Nexus AI/src/lib/translations.ts` | 🆕 通知 + 导览 中英文翻译 |
+| `website/frontend/package.json` | 🆕 + vite-plugin-pwa |
+| `website/frontend/vite.config.ts` | 🆕 PWA 插件配置 (manifest + SW + runtimeCaching) |
+| `website/frontend/index.html` | 🆕 manifest / theme-color / apple-mobile-web-app meta |
+| `website/frontend/public/pwa-icon.svg` | 🆕 PWA 图标 (512x512 pig logo + 星星 + 盾牌) |
+| `website/frontend/src/components/Sidebar.tsx` | 🔄 重写：通知铃铛 + 未读红点 + 下拉面板 + 角色过滤导航 |
+| `website/frontend/src/components/Dashboard.tsx` | 🆕 通知轮询 (30s) + unreadCount 传递 |
+| `website/frontend/src/components/MainPage.tsx` | 🔄 GettingStartedBanner → GuidedTour (5步导览) |
+| `website/frontend/src/lib/translations.ts` | 🆕 通知 + 导览 中英文翻译 |
 
 ### 结构整理
 
 | 移动前 | 移动后 |
 |--------|--------|
-| `docker-compose.yml` | `deploy/docker-compose.yml` |
-| `Dockerfile.tunnel` | `deploy/Dockerfile.tunnel` |
-| `tunnel-config.yml` | `deploy/tunnel-config.yml` |
+| `docker-compose.yml` | `website/deploy/docker-compose.yml` |
+| `Dockerfile.tunnel` | `website/deploy/Dockerfile.tunnel` |
+| `tunnel-config.yml` | `website/deploy/tunnel-config.yml` |
 | `yizhizhu/` (根目录) | `docs/yizhizhu/` |
-| `猪猪.png` (根目录) | `assets/猪猪.png` |
+| `猪猪.png` (根目录) | `website/assets/猪猪.png` |
 | README/CHANGELOG/OPS/CODE_MAP (根目录) | `docs/` 下 |
 
 ---
@@ -338,13 +338,13 @@ SMTP_PASS=your-app-password
 
 | 文件 | 变更 |
 |------|------|
-| `platform-backend/.env` | 取消注释 SERVER_DEEPSEEK_KEY，填入有效 Key |
-| `platform-backend/app/api/admin.py` | 删除用户新增级联清理（tasks/scans/reviews/assets/teams） |
-| `Nexus AI/src/components/TaskHistory.tsx` | 🆕 新建 — 任务历史页面，支持展开查看代码和扫描报告 |
-| `Nexus AI/src/components/Dashboard.tsx` | 引入 TaskHistory 组件，注册 history 路由 |
-| `Nexus AI/src/components/Sidebar.tsx` | 新增 history 导航按钮 + NavIcon |
-| `Nexus AI/src/lib/translations.ts` | 新增 sidebar.history 中英文翻译；更新 onboarding.step2 文案 |
-| `Nexus AI/src/components/MainPage.tsx` | Onboarding step2 action 从跳转 Settings 改为聚焦输入框 |
+| `website/backend/.env` | 取消注释 SERVER_DEEPSEEK_KEY，填入有效 Key |
+| `website/backend/app/api/admin.py` | 删除用户新增级联清理（tasks/scans/reviews/website/assets/teams） |
+| `website/frontend/src/components/TaskHistory.tsx` | 🆕 新建 — 任务历史页面，支持展开查看代码和扫描报告 |
+| `website/frontend/src/components/Dashboard.tsx` | 引入 TaskHistory 组件，注册 history 路由 |
+| `website/frontend/src/components/Sidebar.tsx` | 新增 history 导航按钮 + NavIcon |
+| `website/frontend/src/lib/translations.ts` | 新增 sidebar.history 中英文翻译；更新 onboarding.step2 文案 |
+| `website/frontend/src/components/MainPage.tsx` | Onboarding step2 action 从跳转 Settings 改为聚焦输入框 |
 
 ---
 
@@ -376,12 +376,12 @@ SMTP_PASS=your-app-password
 
 | 文件 | 变更 |
 |------|------|
-| `platform-backend/app/admin_app.py` | 🆕 新建 — 独立 FastAPI 实例，admin-only |
-| `platform-backend/app/api/admin.py` | 新增审核管理、Data Browser、payment config 端点 |
-| `platform-backend/app/api/review.py` | 移除 admin 端点，仅保留用户端 |
-| `platform-backend/app/main.py` | 移除 admin_router 引用 |
-| `Nexus AI/src/components/AdminPage.tsx` | API 调用走 8002 端口，新增 Database 标签页 |
-| `start.sh` | 新增 admin server 启动，双进程管理 |
+| `website/backend/app/admin_app.py` | 🆕 新建 — 独立 FastAPI 实例，admin-only |
+| `website/backend/app/api/admin.py` | 新增审核管理、Data Browser、payment config 端点 |
+| `website/backend/app/api/review.py` | 移除 admin 端点，仅保留用户端 |
+| `website/backend/app/main.py` | 移除 admin_router 引用 |
+| `website/frontend/src/components/AdminPage.tsx` | API 调用走 8002 端口，新增 Database 标签页 |
+| `website/start.sh` | 新增 admin server 启动，双进程管理 |
 
 ---
 
@@ -412,13 +412,13 @@ SMTP_PASS=your-app-password
 
 | 文件 | 变更 |
 |------|------|
-| `platform-backend/app/api/generate.py` | 新增 `_is_ollama_running()`, `_resolve_auto_config()`, 非流式+流式双端自动检测 |
-| `Nexus AI/src/components/Dashboard.tsx` | 移除 API Key 硬检查，允许空 Key 发送 |
-| `Nexus AI/src/components/MainPage.tsx` | "No API key" 改为 "Free Tier" 提示 |
-| `platform-backend/.env` | 新增 `SERVER_DEEPSEEK_KEY` / `SERVER_DEFAULT_MODEL` 配置项 |
-| `Nexus AI/src/components/Dashboard.tsx` | 默认落地页改为 AI Tools 页面（非团队页） |
-| `Nexus AI/src/components/ReviewPage.tsx` | 自动填充 task_id，无需用户手动复制粘贴 |
-| `Nexus AI/src/context/LanguageContext.tsx` | 自动检测浏览器语言，中文用户默认显示中文 |
+| `website/backend/app/api/generate.py` | 新增 `_is_ollama_running()`, `_resolve_auto_config()`, 非流式+流式双端自动检测 |
+| `website/frontend/src/components/Dashboard.tsx` | 移除 API Key 硬检查，允许空 Key 发送 |
+| `website/frontend/src/components/MainPage.tsx` | "No API key" 改为 "Free Tier" 提示 |
+| `website/backend/.env` | 新增 `SERVER_DEEPSEEK_KEY` / `SERVER_DEFAULT_MODEL` 配置项 |
+| `website/frontend/src/components/Dashboard.tsx` | 默认落地页改为 AI Tools 页面（非团队页） |
+| `website/frontend/src/components/ReviewPage.tsx` | 自动填充 task_id，无需用户手动复制粘贴 |
+| `website/frontend/src/context/LanguageContext.tsx` | 自动检测浏览器语言，中文用户默认显示中文 |
 
 ### UX 改进
 
@@ -430,7 +430,7 @@ SMTP_PASS=your-app-password
 
 ### 部署注意
 
-- 启用共享 Key：取消注释 `platform-backend/.env` 中的 `SERVER_DEEPSEEK_KEY` 并填入 Key
+- 启用共享 Key：取消注释 `website/backend/.env` 中的 `SERVER_DEEPSEEK_KEY` 并填入 Key
 - 启用 Ollama：在服务器上安装 Ollama `curl -fsSL https://ollama.com/install.sh | sh` 并拉取模型
 
 ---
@@ -440,7 +440,7 @@ SMTP_PASS=your-app-password
 ### Breaking Changes
 
 - **数据库合并**: `auth.db` 和 `chat_history.db` 已合并到 `app.db`。首次启动自动迁移遗留数据，幂等（仅执行一次）
-- **日志合并**: 所有日志路径从 `/tmp/` 和 `platform-backend/` 集中到项目根目录 `logs/`
+- **日志合并**: 所有日志路径从 `/tmp/` 和 `website/backend/` 集中到项目根目录 `logs/`
 - **文档整合**: `CLAUDE.md` + `REQUIREMENTS_SUMMARY.md` 已合并进其他文档，删除了这两个文件
 
 ### 新增功能
@@ -465,20 +465,20 @@ SMTP_PASS=your-app-password
 
 | 文件 | 变更 |
 |------|------|
-| `Nexus AI/src/components/LandingPage.tsx` | 🆕 新建 |
-| `Nexus AI/src/App.tsx` | 路由逻辑：`/` → Landing, `/login` → Login |
-| `Nexus AI/src/components/Login.tsx` | 新增 "← Back to Home" |
-| `Nexus AI/src/components/AdminPage.tsx` | 🆕 Users 标签页 |
-| `Nexus AI/src/components/AssetLibrary.tsx` | 🆕 Team 下拉筛选 |
-| `Nexus AI/src/components/ReviewPage.tsx` | 🆕 显示价格 + 支付按钮 |
-| `platform-backend/app/db.py` | auth + chat 表定义, `migrate_from_legacy()` |
-| `platform-backend/app/auth/auth.py` | `_get_conn()` → 委托给 app.db |
-| `platform-backend/app/api/chat_history.py` | `_get_conn()` → 委托给 app.db |
-| `platform-backend/app/main.py` | 启动时调用 `migrate_from_legacy()`, 注册 payment router |
-| `platform-backend/app/api/payment.py` | 🆕 Stripe Checkout + webhook |
-| `platform-backend/app/api/review.py` | 支持 `pending_payment` 状态 |
+| `website/frontend/src/components/LandingPage.tsx` | 🆕 新建 |
+| `website/frontend/src/App.tsx` | 路由逻辑：`/` → Landing, `/login` → Login |
+| `website/frontend/src/components/Login.tsx` | 新增 "← Back to Home" |
+| `website/frontend/src/components/AdminPage.tsx` | 🆕 Users 标签页 |
+| `website/frontend/src/components/AssetLibrary.tsx` | 🆕 Team 下拉筛选 |
+| `website/frontend/src/components/ReviewPage.tsx` | 🆕 显示价格 + 支付按钮 |
+| `website/backend/app/db.py` | auth + chat 表定义, `migrate_from_legacy()` |
+| `website/backend/app/auth/auth.py` | `_get_conn()` → 委托给 app.db |
+| `website/backend/app/api/chat_history.py` | `_get_conn()` → 委托给 app.db |
+| `website/backend/app/main.py` | 启动时调用 `migrate_from_legacy()`, 注册 payment router |
+| `website/backend/app/api/payment.py` | 🆕 Stripe Checkout + webhook |
+| `website/backend/app/api/review.py` | 支持 `pending_payment` 状态 |
 | `.env` | 新增 `SECRET_KEY`, `CORS_ORIGINS`, Stripe 配置项 |
-| **日志合并** | `start.sh` 6 处路径, `main.py` 默认 LOG_FILE |
+| **日志合并** | `website/start.sh` 6 处路径, `main.py` 默认 LOG_FILE |
 | `.gitignore` | `logs/` 替代旧的 `*.log` |
 | `CODE_MAP.md` | 更新 DB 章节, 新增 LandingPage/payment/AdminPage 用户管理 |
 | `README.md` | 🆕 功能状态一览章节, 更新架构图/DB/路由/环境变量 |
@@ -516,18 +516,18 @@ uvicorn 运行在 WSL2 上，socat 转发到 Windows 侧连不上。
 #### 3. start.sh 找不到 Tunnel Token
 
 Token 仅通过手动 `docker run -e TUNNEL_TOKEN=...` 传入，未持久化，
-`start.sh` 的 `get_tunnel_token()` 无法找到它。
+`website/start.sh` 的 `get_tunnel_token()` 无法找到它。
 
-**修复** (`start.sh` + `.env`):
+**修复** (`website/start.sh` + `.env`):
 - 新建 `.env` 文件存放 `TUNNEL_TOKEN`
-- `start.sh` 启动时自动加载 `PROJECT_DIR/.env`
+- `website/start.sh` 启动时自动加载 `PROJECT_DIR/.env`
 
 ### 涉及文件
 
 | 文件 | 变更 |
 |---|---|
 | `Dockerfile.tunnel` | 修复 IPv4/IPv6 解析、修复 host.docker.internal 指向 |
-| `start.sh` | 新增 `.env` 自动加载逻辑 |
+| `website/start.sh` | 新增 `.env` 自动加载逻辑 |
 | `.env` | 新建，持久化 `TUNNEL_TOKEN` |
 
 ### 验证

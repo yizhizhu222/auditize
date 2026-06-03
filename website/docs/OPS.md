@@ -26,25 +26,25 @@
 
 ```bash
 # 启动前后端（开发模式）
-./start.sh
+website/start.sh
 
 # 先构建前端再启动
-./start.sh --build
+website/start.sh --build
 
 # 仅启动开发服务器（不自动构建 dist/）
-./start.sh --dev
+website/start.sh --dev
 
 # 停止所有服务
-./start.sh --stop
+website/start.sh --stop
 
 # 查看服务状态
-./start.sh --status
+website/start.sh --status
 ```
 
 ### 手动启动后端（生产端口 8001）
 
 ```bash
-cd platform-backend
+cd website/backend
 source .venv/bin/activate
 uvicorn app.main:app --host 0.0.0.0 --port 8001
 ```
@@ -54,7 +54,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8001
 ### 手动启动管理后台（独立端口 8002）
 
 ```bash
-cd platform-backend
+cd website/backend
 source .venv/bin/activate
 uvicorn app.admin_app:app --host 127.0.0.1 --port 8002
 ```
@@ -65,14 +65,14 @@ uvicorn app.admin_app:app --host 127.0.0.1 --port 8002
 ### 手动启动前端
 
 ```bash
-cd "Nexus AI"
+cd "website/frontend"
 npx vite --host 0.0.0.0 --port 5173
 ```
 
 ### 前端构建
 
 ```bash
-cd "Nexus AI"
+cd "website/frontend"
 npx vite build          # 构建到 dist/
 npx vite build --watch  # 增量构建（源码修改自动重建）
 ```
@@ -81,14 +81,14 @@ npx vite build --watch  # 增量构建（源码修改自动重建）
 
 ```bash
 # 1. 构建前端
-cd "Nexus AI"
+cd "website/frontend"
 npx vite build
 
 # 2. 复制到后端
-rm -rf ../platform-backend/app/dist && cp -r dist ../platform-backend/app/dist
+rm -rf ../website/backend/app/dist && cp -r dist ../website/backend/app/dist
 
 # 3. 重启后端
-cd ../platform-backend
+cd ../website/backend
 pkill -f "uvicorn app.main:app" && sleep 1
 nohup python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8001 > /tmp/backend.log 2>&1 &
 ```
@@ -99,35 +99,35 @@ nohup python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8001 > /tmp/backend.
 
 ### 日志文件位置
 
-所有日志统一存放在项目根目录 `logs/` 下：
+所有日志统一存放在项目根目录 `website/logs/` 下：
 
 | 日志 | 路径 | 说明 |
 |------|------|------|
-| 后端应用日志 | `logs/backend-app.log` | Python 应用运行时日志（FastAPI） |
-| 后端启动日志 | `logs/backend-uvicorn.log` | uvicorn 进程 stdout/stderr |
-| 前端开发日志 | `logs/frontend-dev.log` | Vite 开发服务器日志 |
-| 前端构建日志 | `logs/frontend-build.log` | vite build --watch 增量构建日志 |
-| 隧道日志 | `logs/tunnel.log` | Cloudflare Tunnel 日志 |
-| Docker 构建日志 | `logs/docker-build.log` | Docker 镜像构建日志 |
+| 后端应用日志 | `website/logs/backend-app.log` | Python 应用运行时日志（FastAPI） |
+| 后端启动日志 | `website/logs/backend-uvicorn.log` | uvicorn 进程 stdout/stderr |
+| 前端开发日志 | `website/logs/frontend-dev.log` | Vite 开发服务器日志 |
+| 前端构建日志 | `website/logs/frontend-build.log` | vite build --watch 增量构建日志 |
+| 隧道日志 | `website/logs/tunnel.log` | Cloudflare Tunnel 日志 |
+| Docker 构建日志 | `website/logs/docker-build.log` | Docker 镜像构建日志 |
 | 临时后端日志 | `/tmp/backend.log` | 后台 daemon 启动日志（nohup 输出） |
 
 ### 常用日志命令
 
 ```bash
 # 查看实时日志
-tail -f logs/backend-app.log
+tail -f website/logs/backend-app.log
 
 # 查看最近 N 行
-tail -100 logs/backend-app.log
+tail -100 website/logs/backend-app.log
 
 # 搜索错误
-grep -i "error\|exception\|traceback" logs/backend-app.log
+grep -i "error\|exception\|traceback" website/logs/backend-app.log
 
 # 按日期搜索
-grep "2026-06-02" logs/backend-app.log
+grep "2026-06-02" website/logs/backend-app.log
 
 # 搜索特定用户请求
-grep "user_id=1" logs/backend-app.log
+grep "user_id=1" website/logs/backend-app.log
 
 # 查看后端 nohup 日志（启动信息）
 tail -20 /tmp/backend.log
@@ -135,7 +135,7 @@ tail -20 /tmp/backend.log
 
 ### 日志级别
 
-在 `platform-backend/.env` 中配置：
+在 `website/backend/.env` 中配置：
 
 ```env
 LOG_LEVEL=INFO     # 默认，生产环境建议
@@ -167,7 +167,7 @@ LOG_LEVEL=WARNING  # 仅警告和错误
 
 ### 数据库文件
 
-项目使用 **单个 SQLite 数据库** `app.db`，位于 `platform-backend/data/`。
+项目使用 **单个 SQLite 数据库** `app.db`，位于 `website/backend/data/`。
 
 | 数据库 | 用途 | 关键表 |
 |--------|------|--------|
@@ -179,59 +179,59 @@ LOG_LEVEL=WARNING  # 仅警告和错误
 
 ```bash
 # 一键备份数据库
-mkdir -p backups/$(date +%Y-%m-%d)
-sqlite3 platform-backend/data/app.db ".backup 'backups/$(date +%Y-%m-%d)/app.db'"
-echo "Backed up to backups/$(date +%Y-%m-%d)/"
+mkdir -p website/backups/$(date +%Y-%m-%d)
+sqlite3 website/backend/data/app.db ".backup 'website/backups/$(date +%Y-%m-%d)/app.db'"
+echo "Backed up to website/backups/$(date +%Y-%m-%d)/"
 
 # 或直接复制（需停止服务）
-cp platform-backend/data/app.db backups/$(date +%Y-%m-%d)/
+cp website/backend/data/app.db website/backups/$(date +%Y-%m-%d)/
 ```
 
 ### 恢复
 
 ```bash
 # 停止服务 → 恢复数据库 → 重启
-./start.sh --stop
-cp backups/2026-06-01/app.db platform-backend/data/app.db
-./start.sh
+website/start.sh --stop
+cp website/backups/2026-06-01/app.db website/backend/data/app.db
+website/start.sh
 ```
 
 ### 查看数据库内容
 
 ```bash
 # 查看所有用户
-sqlite3 platform-backend/data/app.db "SELECT id, username, role, created_at FROM users;"
+sqlite3 website/backend/data/app.db "SELECT id, username, role, created_at FROM users;"
 
 # 查看团队列表
-sqlite3 platform-backend/data/app.db "SELECT id, name, created_by, created_at FROM teams;"
+sqlite3 website/backend/data/app.db "SELECT id, name, created_by, created_at FROM teams;"
 
 # 查看团队成员
-sqlite3 platform-backend/data/app.db "SELECT * FROM team_members;"
+sqlite3 website/backend/data/app.db "SELECT * FROM team_members;"
 
 # 查看需求列表
-sqlite3 platform-backend/data/app.db "SELECT id, title, status, user_id, team_id FROM feature_requests ORDER BY created_at DESC;"
+sqlite3 website/backend/data/app.db "SELECT id, title, status, user_id, team_id FROM feature_requests ORDER BY created_at DESC;"
 
 # 查看代码资产
-sqlite3 platform-backend/data/app.db "SELECT id, title, language, user_id, team_id FROM code_assets ORDER BY created_at DESC;"
+sqlite3 website/backend/data/app.db "SELECT id, title, language, user_id, team_id FROM code_assets ORDER BY created_at DESC;"
 
 # 查看生成任务
-sqlite3 platform-backend/data/app.db "SELECT id, idea_text, language, status, created_at FROM generation_tasks ORDER BY created_at DESC LIMIT 10;"
+sqlite3 website/backend/data/app.db "SELECT id, idea_text, language, status, created_at FROM generation_tasks ORDER BY created_at DESC LIMIT 10;"
 
 # 查看登录尝试
-sqlite3 platform-backend/data/app.db "SELECT username, success, attempted_at FROM login_attempts ORDER BY attempted_at DESC LIMIT 10;"
+sqlite3 website/backend/data/app.db "SELECT username, success, attempted_at FROM login_attempts ORDER BY attempted_at DESC LIMIT 10;"
 ```
 
 ### 重置数据库（开发用）
 
 ```bash
 # 停止服务
-./start.sh --stop
+website/start.sh --stop
 
 # 删除数据库文件（服务重启时会自动重建）
-rm platform-backend/data/app.db
+rm website/backend/data/app.db
 
 # 重启服务（自动创建表 + admin 用户）
-./start.sh
+website/start.sh
 ```
 
 > ⚠️ 重置会删除所有数据，包括用户、团队、需求、资产等。
@@ -247,23 +247,23 @@ rm platform-backend/data/app.db
 git pull origin main
 
 # 安装新依赖（后端）
-cd platform-backend
+cd website/backend
 source .venv/bin/activate
 pip install -r requirements.txt --no-cache-dir
 
 # 安装新依赖（前端）
-cd "Nexus AI"
+cd "website/frontend"
 npm install
 
 # 构建前端（生产环境）
 npm run build
 
 # 复制到后端
-rm -rf ../platform-backend/app/dist && cp -r dist ../platform-backend/app/dist
+rm -rf ../website/backend/app/dist && cp -r dist ../website/backend/app/dist
 
 # 重启后端
 pkill -f "uvicorn app.main:app" && sleep 1
-cd ../platform-backend && nohup python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8001 > /tmp/backend.log 2>&1 &
+cd ../website/backend && nohup python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8001 > /tmp/backend.log 2>&1 &
 ```
 
 ### 数据库迁移
@@ -283,16 +283,16 @@ except sqlite3.OperationalError:
 
 ```bash
 # 1. 构建前端
-cd "Nexus AI" && npm ci && npm run build
+cd "website/frontend" && npm ci && npm run build
 
 # 2. 安装后端依赖
-cd ../platform-backend && source .venv/bin/activate && pip install -r requirements.txt
+cd ../website/backend && source .venv/bin/activate && pip install -r requirements.txt
 
 # 3. 修改 .env 配置
 #    SECRET_KEY、CORS_ORIGINS、DEBUG=false
-#    platform-backend/.env 中 SERVER_DEEPSEEK_KEY 等
+#    website/backend/.env 中 SERVER_DEEPSEEK_KEY 等
 
-# 4. 配置 Nginx 反向代理（参考 deploy/nginx.conf）
+# 4. 配置 Nginx 反向代理（参考 website/deploy/nginx.conf）
 #    注意：nginx 代理指向 localhost:8001
 
 # 5. 启动后端
@@ -303,9 +303,9 @@ python3 -m uvicorn app.main:app --host 127.0.0.1 --port 8001
 
 1. 安装 Python 3.10+, Node.js 18+, Nginx
 2. `git clone` 项目
-3. 运行 `deploy/setup.sh`
-4. 配置 `platform-backend/.env`
-5. 配置 Nginx + SSL（参考 `deploy/nginx.conf`）
+3. 运行 `website/deploy/setup.sh`
+4. 配置 `website/backend/.env`
+5. 配置 Nginx + SSL（参考 `website/deploy/nginx.conf`）
 
 ---
 
@@ -348,10 +348,10 @@ open http://localhost:8001/redoc
 
 ```bash
 # 查看数据库文件大小
-ls -lh platform-backend/data/app.db
+ls -lh website/backend/data/app.db
 
 # 清理 WAL 文件（SQLite 预写日志）
-sqlite3 platform-backend/data/app.db "PRAGMA wal_checkpoint;"
+sqlite3 website/backend/data/app.db "PRAGMA wal_checkpoint;"
 ```
 
 ### 定时备份 (cron)
@@ -360,7 +360,7 @@ sqlite3 platform-backend/data/app.db "PRAGMA wal_checkpoint;"
 # 每天凌晨 3 点备份数据库
 crontab -e
 # 添加：
-0 3 * * * cd /path/to/truffle && mkdir -p backups/$(date +\%Y-\%m-\%d) && cp platform-backend/data/*.db backups/$(date +\%Y-\%m-\%d)/
+0 3 * * * cd /path/to/truffle && mkdir -p website/backups/$(date +\%Y-\%m-\%d) && cp website/backend/data/*.db website/backups/$(date +\%Y-\%m-\%d)/
 ```
 
 ### 服务进程检查
@@ -429,7 +429,7 @@ Mac:           Cmd + Shift + R
 | `index.html` | `no-cache, no-store, must-revalidate` — 永远不缓存 |
 | `sw.js` | `no-cache, no-store, must-revalidate` — 必须最新 |
 | `workbox-*.js` | `no-cache, no-store, must-revalidate` — 必须最新 |
-| `assets/*.js, *.css` | PWA 预缓存，由 SW 版本号控制更新 |
+| `website/assets/*.js, *.css` | PWA 预缓存，由 SW 版本号控制更新 |
 | API 响应 | 默认不缓存 |
 
 ### PWA Service Worker 更新流程
@@ -449,7 +449,7 @@ Mac:           Cmd + Shift + R
 ### 后端测试
 
 ```bash
-cd platform-backend
+cd website/backend
 source .venv/bin/activate
 
 # 运行全部测试
@@ -485,7 +485,7 @@ python -m pytest tests/ --tb=no -q
 ### 前端测试
 
 ```bash
-cd "Nexus AI"
+cd "website/frontend"
 
 # 运行全部测试
 npx vitest run
@@ -525,20 +525,20 @@ npx vitest run -- src/test/TeamPage.test.tsx
 
 ```bash
 #!/bin/bash
-BACKUP_DIR="backups/$(date +%Y-%m-%d_%H%M%S)"
+BACKUP_DIR="website/backups/$(date +%Y-%m-%d_%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # 数据库
-cp platform-backend/data/app.db "$BACKUP_DIR/" 2>/dev/null
+cp website/backend/data/app.db "$BACKUP_DIR/" 2>/dev/null
 
 # 环境配置（去掉敏感信息）
 cp .env "$BACKUP_DIR/.env" 2>/dev/null
 
 # 上传文件（头像等）
-cp -r platform-backend/data/avatars "$BACKUP_DIR/avatars" 2>/dev/null
+cp -r website/backend/data/avatars "$BACKUP_DIR/avatars" 2>/dev/null
 
 # 日志
-cp logs/backend-app.log "$BACKUP_DIR/" 2>/dev/null
+cp website/logs/backend-app.log "$BACKUP_DIR/" 2>/dev/null
 
 echo "Backup complete: $BACKUP_DIR"
 ls -lh "$BACKUP_DIR"
@@ -547,9 +547,9 @@ ls -lh "$BACKUP_DIR"
 ### 从备份恢复
 
 ```bash
-./start.sh --stop
-cp backups/2026-06-01_143022/app.db platform-backend/data/app.db
-./start.sh
+website/start.sh --stop
+cp website/backups/2026-06-01_143022/app.db website/backend/data/app.db
+website/start.sh
 ```
 
 ---
@@ -565,19 +565,19 @@ cp backups/2026-06-01_143022/app.db platform-backend/data/app.db
 ```bash
 # 1. 检查日志
 cat /tmp/backend.log
-tail -50 platform-backend/server.log
+tail -50 website/backend/server.log
 
 # 2. 检查端口冲突
 lsof -i :8001
 
 # 3. 检查虚拟环境
-cd platform-backend && source .venv/bin/activate && python -c "from app.main import app; print('OK')"
+cd website/backend && source .venv/bin/activate && python -c "from app.main import app; print('OK')"
 
 # 4. 检查 .env 配置
-cat platform-backend/.env
+cat website/backend/.env
 
 # 5. 检查数据库是否损坏
-sqlite3 platform-backend/data/app.db "PRAGMA integrity_check;"
+sqlite3 website/backend/data/app.db "PRAGMA integrity_check;"
 ```
 
 ### 前端无法启动
@@ -587,10 +587,10 @@ sqlite3 platform-backend/data/app.db "PRAGMA integrity_check;"
 cat /tmp/truffle-frontend.log
 
 # 2. 检查 node_modules
-ls "Nexus AI/node_modules" | head -5
+ls "website/frontend/node_modules" | head -5
 
 # 3. 重新安装依赖
-cd "Nexus AI" && rm -rf node_modules && npm install
+cd "website/frontend" && rm -rf node_modules && npm install
 
 # 4. 检查 TypeScript 错误
 npx tsc --noEmit
@@ -629,7 +629,7 @@ cloudflared tunnel run --token YOUR_TOKEN
 
 ```bash
 # 1. 确认 dist 已更新
-grep "LandingPage\|SafetyReport\|new_feature" platform-backend/app/dist/assets/index-*.js | head -3
+grep "LandingPage\|SafetyReport\|new_feature" website/backend/app/dist/website/assets/index-*.js | head -3
 
 # 2. 确认后端返回正确的缓存头
 curl -sI http://localhost:8001/ | grep -i cache
@@ -704,7 +704,7 @@ curl -s -N --max-time 10 http://localhost:8001/api/v1/generate/stream \
 
 ### Nginx SSE 缓冲导致流式卡顿
 
-**解决**: 在 `deploy/nginx.conf` 添加：
+**解决**: 在 `website/deploy/nginx.conf` 添加：
 ```nginx
 proxy_buffering off;
 proxy_cache off;
@@ -719,17 +719,17 @@ proxy_cache off;
 ### 数据库死锁 / 繁忙
 
 ```bash
-sqlite3 platform-backend/data/app.db "PRAGMA journal_mode=WAL;"
-./start.sh --stop && ./start.sh
+sqlite3 website/backend/data/app.db "PRAGMA journal_mode=WAL;"
+website/start.sh --stop && ./start.sh
 ```
 
 ### 磁盘空间不足
 
 ```bash
 df -h
-truncate -s 0 logs/backend-app.log
-sqlite3 platform-backend/data/app.db "PRAGMA wal_checkpoint(TRUNCATE);"
-find backups/ -maxdepth 1 -type d -mtime +7 -exec rm -rf {} \;
+truncate -s 0 website/logs/backend-app.log
+sqlite3 website/backend/data/app.db "PRAGMA wal_checkpoint(TRUNCATE);"
+find website/backups/ -maxdepth 1 -type d -mtime +7 -exec rm -rf {} \;
 ```
 
 ---
@@ -744,9 +744,9 @@ find backups/ -maxdepth 1 -type d -mtime +7 -exec rm -rf {} \;
 | `CORS_ORIGINS` | `.env` | ✅ `https://trufflekit.com` | 跨域允许域名 |
 | `DEBUG` | `.env` | `true`（开发）/ `false`（生产） | 生产务必 `false` |
 | `STRIPE_SECRET_KEY` | `.env` | 注释状态 | 激活付费审核 |
-| `SERVER_DEEPSEEK_KEY` | `platform-backend/.env` | ✅ 已配置 | 用户免 Key 兜底 |
-| `SERVER_DEFAULT_MODEL` | `platform-backend/.env` | `deepseek-chat` | 共享 Key 默认模型 |
-| **Admin 端口 8002** | `start.sh` | `127.0.0.1:8002` | 不暴露公网 |
+| `SERVER_DEEPSEEK_KEY` | `website/backend/.env` | ✅ 已配置 | 用户免 Key 兜底 |
+| `SERVER_DEFAULT_MODEL` | `website/backend/.env` | `deepseek-chat` | 共享 Key 默认模型 |
+| **Admin 端口 8002** | `website/start.sh` | `127.0.0.1:8002` | 不暴露公网 |
 | **后端端口 8001** | uvicorn 启动参数 | `0.0.0.0:8001` | 匹配 Cloudflare 隧道 |
 
 ### 切换域名
