@@ -44,5 +44,6 @@ packages = ["cli"]
 [tool.hatch.build.targets.sdist]
 include = [
     "cli/",
+    "scripts/",
     "README.md",
 ]
