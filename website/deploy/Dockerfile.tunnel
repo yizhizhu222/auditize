@@ -1,0 +1,24 @@
+# 使用本地已缓存的 Alpine 基础镜像 + 拷贝本地 cloudflared
+# 避免 Docker Hub / GitHub 拉取超时
+FROM ghcr.io/sillytavern/sillytavern:latest
+
+# 清除基础镜像的 ENTRYPOINT（sillytavern 使用 tini 启动）
+ENTRYPOINT []
+
+RUN apk add --no-cache socat
+
+# 从宿主机拷贝 cloudflared（避免从 GitHub 下载超时）
+COPY cloudflared /usr/local/bin/cloudflared
+RUN chmod +x /usr/local/bin/cloudflared
+
+# TUNNEL_TOKEN 和 BACKEND_PORT 通过 -e 运行时传入
+# socat 转发容器内 8000 → 宿主机 BACKEND_PORT
+# 修复1: cloudflared 通过 localhost:8000 连接，但 Alpine 容器内 localhost 解析到 ::1 优先
+#        socat 默认只监听 IPv4 — 修正 /etc/hosts 确保 localhost 走 127.0.0.1
+# 修复2: 在 WSL2 + Docker Desktop 环境下 host.docker.internal 会指向 Windows 主机
+#        而非 WSL2 VM，而后端实际运行在 WSL2 上
+#        改用 Docker 网关 172.17.0.1（始终指向 Docker 宿主机 = WSL2 VM）
+CMD echo '127.0.0.1 localhost' > /etc/hosts && \
+    socat TCP-LISTEN:8000,reuseaddr,fork TCP:172.17.0.1:${BACKEND_PORT:-8001} & \
+    sleep 1 && \
+    cloudflared tunnel run --token $TUNNEL_TOKEN --protocol http2

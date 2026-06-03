@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Theme CSS variables (defaults) ── */
+:root {
+  --color-bg: #0D1117;
+  --color-panel: #161B22;
+  --color-border: #30363D;
+  --color-text: #E6EDF3;
+  --color-text-muted: #8D96A0;
+  --color-text-dim: #484F58;
+  --color-hover: #1C2128;
+  --color-sub-border: #21262D;
+  --color-accent: #22D3EE;
+  --color-accent-bg: rgba(34, 211, 238, 0.08);
+  --app-font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  --app-font-size: 13px;
+  --app-font-ligatures: normal;
+}
+
+html, body {
+  font-family: var(--app-font-family);
+  font-size: var(--app-font-size);
+  font-variant-ligatures: var(--app-font-ligatures);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Smooth transitions on theme switch ── */
+html, html *, html *::before, html *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #30363D; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #484F58; }
+
+::selection { background: rgba(34, 211, 238, 0.2); color: #fff; }
+*:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-accent); }
+::placeholder { color: #484F58 !important; opacity: 1; }
+
+code, pre, kbd, .font-mono {
+  font-variant-ligatures: var(--app-font-ligatures);
+}
+
+/* ── Landing page animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(236, 72, 153, 0.15); }
+  50%      { box-shadow: 0 0 40px rgba(236, 72, 153, 0.3); }
+}

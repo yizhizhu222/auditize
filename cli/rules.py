@@ -30,10 +30,8 @@ SKIP_DIRS = {
     "elm-stuff", ".stack-work", "deps", "_build", ".elixir_ls",
     "site-packages", ".pytest_cache", ".mypy_cache", ".ruff_cache",
     "Pods", ".build", "DerivedData", "migrations",
-    "demo",          # 刻意包含不安全代码的 demo 目录
+    "website",       # 平台完整代码（避免重复扫描）
     "yizhizhu",      # 用户个人笔记（可能含示例密码）
-    "legacy_backup", # 备份目录
-    "Auditize",      # 项目内嵌的完整备份副本（避免重复扫描）
 }
 
 SKIP_FILE_EXT = {

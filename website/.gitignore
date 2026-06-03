@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.venv/
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.bak
+
+# Node
+node_modules/
+.next/
+.cache/
+package-lock.json
+
+# Build
+dist/
+build/
+target/
+out/
+
+# OS
+.DS_Store
+*.swp
+
+# IDE
+.vscode/
+.idea/
+
+# Env
+.env

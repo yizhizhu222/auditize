@@ -1,0 +1,8 @@
+tunnel: trufflekit
+credentials-file: /root/.cloudflared/credentials.json
+ingress:
+  - hostname: trufflekit.com
+    service: http://localhost:8001
+  - hostname: www.trufflekit.com
+    service: http://localhost:8001
+  - service: http_status:404

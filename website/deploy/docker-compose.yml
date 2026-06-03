@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  # ── Backend (FastAPI + Python) ─────────────────────────────────────────────
+  backend:
+    build:
+      context: ./platform-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./platform-backend:/app
+      - ./platform-backend/data:/app/data
+      - ./platform-backend/.env:/app/.env
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=DEBUG
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ── Frontend (Vite dev server, for development) ────────────────────────────
+  frontend:
+    build:
+      context: ./Nexus AI
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Nexus AI/src:/app/src
+      - ./Nexus AI/public:/app/public
+      - ./Nexus AI/index.html:/app/index.html
+    environment:
+      - VITE_HOST=0.0.0.0
+    depends_on:
+      - backend
+    restart: unless-stopped

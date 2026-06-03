@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#0D1117"/>
+  <g transform="translate(256,256)">
+    <!-- Pig face -->
+    <ellipse cx="0" cy="30" rx="140" ry="120" fill="#FF9EB5"/>
+    <!-- Ears -->
+    <ellipse cx="-100" cy="-60" rx="40" ry="55" fill="#FF9EB5" transform="rotate(-20,-100,-60)"/>
+    <ellipse cx="100" cy="-60" rx="40" ry="55" fill="#FF9EB5" transform="rotate(20,100,-60)"/>
+    <ellipse cx="-95" cy="-58" rx="22" ry="32" fill="#FFB3C6" transform="rotate(-20,-95,-58)"/>
+    <ellipse cx="95" cy="-58" rx="22" ry="32" fill="#FFB3C6" transform="rotate(20,95,-58)"/>
+    <!-- Eyes -->
+    <ellipse cx="-45" cy="10" rx="14" ry="16" fill="#1A1A1A"/>
+    <ellipse cx="45" cy="10" rx="14" ry="16" fill="#1A1A1A"/>
+    <ellipse cx="-40" cy="5" rx="5" ry="6" fill="#FFF"/>
+    <ellipse cx="50" cy="5" rx="5" ry="6" fill="#FFF"/>
+    <!-- Nose -->
+    <ellipse cx="0" cy="50" rx="35" ry="22" fill="#FF7A99"/>
+    <ellipse cx="-12" cy="45" rx="7" ry="10" fill="#E56080"/>
+    <ellipse cx="12" cy="45" rx="7" ry="10" fill="#E56080"/>
+    <!-- Mouth -->
+    <path d="M-20,70 Q0,90 20,70" fill="none" stroke="#E56080" stroke-width="4" stroke-linecap="round"/>
+    <!-- AI sparkle stars -->
+    <g transform="translate(120,-80)">
+      <polygon points="0,-20 5,-5 20,0 5,5 0,20 -5,5 -20,0 -5,-5" fill="#FFD700"/>
+    </g>
+    <g transform="translate(-130,100) scale(0.6)">
+      <polygon points="0,-20 5,-5 20,0 5,5 0,20 -5,5 -20,0 -5,-5" fill="#FFD700"/>
+    </g>
+    <g transform="translate(130,90) scale(0.5)">
+      <polygon points="0,-20 5,-5 20,0 5,5 0,20 -5,5 -20,0 -5,-5" fill="#FFD700"/>
+    </g>
+    <!-- Shield checkmark -->
+    <g transform="translate(-130,-50) scale(0.9)">
+      <path d="M0,-30 L25,-15 L25,10 Q25,25 0,35 Q-25,25 -25,10 L-25,-15 Z" fill="#2EA043" opacity="0.9"/>
+      <path d="M-12,0 L-4,8 L12,-8" fill="none" stroke="#FFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

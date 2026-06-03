@@ -4,7 +4,6 @@
 !/README.md
 !/pyproject.toml
 !/SECURITY.md
-!/SETUP_GITHUB.md
 !/.gitignore
 !/.gitattributes
 !/.github/
@@ -12,6 +11,7 @@
 !/.pre-commit-hooks.yaml
 !/.pre-commit-config.yaml
 !/CONTRIBUTING.md
+!/website/
 
 # Python 构建产物
 __pycache__/
@@ -23,11 +23,9 @@ build/
 
 # Auditize 本地状态
 .auditize/
-.truffle/
 
 # 开发/系统文件
 .vscode/
 .idea/
 *.swp
-.env
 .DS_Store

@@ -1,0 +1,17 @@
+{
+  "rule_id": "TRUFFLE-FS-001",
+  "name": "File System Operations",
+  "severity": "medium",
+  "languages": ["python", "javascript", "go"],
+  "match_type": "regex",
+  "patterns": [
+    "os\\.remove\\s*\\(",
+    "os\\.unlink\\s*\\(",
+    "shutil\\.rmtree\\s*\\(",
+    "os\\.chmod\\s*\\(",
+    "require\\s*\\(\\s*['\"]fs['\"]\\s*\\)"
+  ],
+  "description": "代码执行文件系统操作，可能删除或修改文件",
+  "recommendation": "确认文件路径是安全的，避免用户控制文件路径",
+  "category": "File System"
+}
