@@ -45,11 +45,10 @@ def _grade_color(grade: str) -> str:
 # ── Banner ──────────────────────────────────────────────────────
 
 def print_banner():
-    """打印品牌标识——仪式感"""
-    print(f"           TruffleKit v{__version__}")
-    print(f" ▐▛▀▀▀▀▀▜▌   确定性安全审查 · 22 条规则")
-    print(f"▝▜███████▛▘  Zero AI · Open Source")
-    print(f"  ▘▘   ▝▝    trufflekit.com")
+    """打印品牌标识——粉猪猪"""
+    print(f"   🐷    ◕ ‿ ◕   TruffleKit v{__version__}")
+    print(f"       （   ）   确定性审查 · 22 条规则")
+    print(f"         ω      Zero AI · Open Source")
     print()
 
 
@@ -300,9 +299,11 @@ def print_explain(rule_id: str):
     """显示某条规则的详细解释"""
     rule = RULE_MAP.get(rule_id.upper())
     if not rule:
+        print_banner()
         print(f"\n  ❌ 未找到规则: {rule_id}")
         print(f"  可用规则: truffle rules list\n")
         return
+    print_banner()
 
     sev = rule["severity"]
     sev_icon = _color(sev)
@@ -338,7 +339,7 @@ def print_explain(rule_id: str):
 
 def print_rules_list(category: str = None):
     """列出所有规则"""
-    print()
+    print_banner()
     print(f"  TruffleKit 规则库 ({len(RULES)} 条)")
     print(f"  {'─' * max(TERM_WIDTH - 4, 30)}")
     print()
