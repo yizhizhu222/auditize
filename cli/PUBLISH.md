@@ -1,6 +1,6 @@
 # 发布到 PyPI
 
-让全世界都能 `pip install trufflekit`。
+让全世界都能 `pip install auditize-cli`。
 
 ---
 
@@ -66,9 +66,9 @@ python -m twine upload dist/*
 
 ```bash
 # 装一遍看看能不能用
-pip install trufflekit
-truffle --version
-truffle scan /path/to/some/project
+pip install auditize-cli
+auditize --version
+auditize scan /path/to/some/project
 ```
 
 ---
@@ -79,5 +79,5 @@ truffle scan /path/to/some/project
 python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 # 从 TestPyPI 安装测试
-pip install --index-url https://test.pypi.org/simple/ trufflekit
+pip install --index-url https://test.pypi.org/simple/ auditize
 ```

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ────────────────────────────────────────────────────────
-# TruffleKit CLI 一键发布脚本
+# Auditize CLI 一键发布脚本
 # ────────────────────────────────────────────────────────
 # 用法：
 #   1. 注册 PyPI:   https://pypi.org/account/register/
@@ -13,7 +13,7 @@
 set -e
 
 VERSION=$(python3 -c "from cli import __version__; print(__version__)")
-echo "📦  TruffleKit CLI v$VERSION 发布工具"
+echo "📦  Auditize CLI v$VERSION 发布工具"
 echo ""
 
 # 1. 检查 Token
@@ -42,10 +42,10 @@ TWINE_USERNAME="__token__" TWINE_PASSWORD="$PYPI_TOKEN" \
 
 # 6. 验证
 echo "✅  验证安装..."
-pip install --no-cache-dir trufflekit 2>&1 | tail -3
-truffle --version
+pip install --no-cache-dir auditize-cli 2>&1 | tail -3
+auditize --version
 
 echo ""
 echo "🎉  发布完成！"
-echo "   pip install trufflekit"
-echo "   truffle scan ."
+echo "   pip install auditize-cli"
+echo "   auditize scan ."

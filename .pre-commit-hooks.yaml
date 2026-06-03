@@ -1,0 +1,22 @@
+# ── Auditize pre-commit hook definition ───────────────────────
+# This file enables other projects to use Auditize via:
+#   pre-commit install
+#   pip install auditize-cli
+#
+# In their .pre-commit-config.yaml:
+#   repos:
+#     - repo: https://github.com/yizhizhu222/auditize
+#       rev: v0.1.1
+#       hooks:
+#         - id: auditize-scan
+# ──────────────────────────────────────────────────────────────
+- id: auditize-scan
+  name: Auditize security scan
+  description: "Scan staged files for security issues before commit"
+  entry: auditize
+  args: ["scan", ".", "--quick"]
+  language: python
+  types: [python]
+  stages: [pre-commit]
+  pass_filenames: false
+  minimum_pre_commit_version: "2.9.0"

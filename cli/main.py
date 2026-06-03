@@ -1,16 +1,16 @@
 """
-TruffleKit CLI 入口
-==================
-truffle scan .              # 默认模式 — 健康度 + 关键项
-truffle scan . --plan       # 行动计划 — 清单式
-truffle scan . --json       # JSON — CI 集成
-truffle scan . --verbose    # 全部展开
-truffle scan . --quick      # 只扫 critical/high/medium
-truffle fix .               # 标记已修复
-truffle fix . --reset       # 重置修复记录
-truffle fix . --status      # 查看修复进度
-truffle explain SEC-001     # 查看规则详解
-truffle rules list          # 列出所有规则
+Auditize CLI 入口
+================
+auditize scan .              # 默认模式 — 健康度 + 关键项
+auditize scan . --plan       # 行动计划 — 清单式
+auditize scan . --json       # JSON — CI 集成
+auditize scan . --verbose    # 全部展开
+auditize scan . --quick      # 只扫 critical/high/medium
+auditize fix .               # 标记已修复
+auditize fix . --reset       # 重置修复记录
+auditize fix . --status      # 查看修复进度
+auditize explain SEC-001     # 查看规则详解
+auditize rules list          # 列出所有规则
 """
 
 import sys
@@ -29,20 +29,20 @@ from .output import (
 
 def main():
     parser = argparse.ArgumentParser(
-        prog="truffle",
-        description="🍄  TruffleKit AI Code Audit  —  确定性安全审查工具",
+        prog="auditize",
+        description="🛡️  Auditize AI Code Audit  —  确定性安全审查工具",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 示例:
-  truffle scan .                         # 扫描当前项目
-  truffle scan /path/to/project --plan   # 行动计划模式
-  truffle scan . --json                  # JSON 输出（CI 集成）
-  truffle explain SEC-001                # 查看规则详解
-  truffle rules list                     # 列出所有规则
-  truffle fix .                          # 标记当前项目问题已修复
+  auditize scan .                         # 扫描当前项目
+  auditize scan /path/to/project --plan   # 行动计划模式
+  auditize scan . --json                  # JSON 输出（CI 集成）
+  auditize explain SEC-001                # 查看规则详解
+  auditize rules list                     # 列出所有规则
+  auditize fix .                          # 标记当前项目问题已修复
 
-文档:  https://trufflekit.com
-规则:  https://github.com/trufflekit/truffle/tree/main/cli/rules
+文档:  https://github.com/yizhizhu222/auditize
+规则:  https://github.com/yizhizhu222/auditize/tree/main/cli/rules
         """,
     )
 
@@ -81,7 +81,7 @@ def main():
     # ── 无参数时 ──────────────────────────────────────────────
     if len(sys.argv) == 1 or sys.argv[1] in ("--version", "-v"):
         if len(sys.argv) > 1 and sys.argv[1] in ("--version", "-v"):
-            print(f"truffle version {__version__}")
+            print(f"auditize version {__version__}")
         else:
             parser.print_help()
         return
@@ -99,7 +99,7 @@ def main():
     elif args.command == "rules":
         _handle_rules(args)
     elif args.command == "version":
-        print(f"truffle version {__version__}")
+        print(f"auditize version {__version__}")
     else:
         parser.print_help()
 

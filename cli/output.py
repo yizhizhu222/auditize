@@ -1,6 +1,6 @@
 """
-TruffleKit 输出格式
-==================
+Auditize 输出格式
+================
 三种输出模式:
   1. 默认模式 — 健康度条 + 关键行动项（最常用）
   2. 行动计划模式 (--plan) — 清单式修复指引
@@ -46,7 +46,7 @@ def _grade_color(grade: str) -> str:
 
 def print_banner():
     """打印品牌标识"""
-    print(f"  TruffleKit v{__version__}  —  确定性安全审查  ·  22 条规则")
+    print(f"  Auditize v{__version__}  —  确定性安全审查  ·  22 条规则")
     print()
 
 
@@ -122,7 +122,7 @@ def print_default(result: dict):
     hidden = total - shown
     if hidden > 0:
         print(f"  其余 {hidden} 项已自动折叠，使用 --verbose 查看全部  |  ", end="")
-    print(f"需要行动计划？  truffle scan . --plan")
+    print(f"需要行动计划？  auditize scan . --plan")
     print()
 
     # 底部统计
@@ -251,9 +251,9 @@ def print_plan(result: dict):
         print(f"   ✅ 无高风险问题，{len(should)} 项建议择机修复")
     else:
         print(f"   🔴 请先修复 {len(must)} 项高风险问题再上线")
-    print(f"   修复后重扫:  truffle scan .")
+    print(f"   修复后重扫:  auditize scan .")
     if must or should:
-        print(f"   标记已修复:  truffle fix <项目路径>")
+        print(f"   标记已修复:  auditize fix <项目路径>")
     print()
 
 
@@ -299,7 +299,7 @@ def print_explain(rule_id: str):
     if not rule:
         print_banner()
         print(f"\n  ❌ 未找到规则: {rule_id}")
-        print(f"  可用规则: truffle rules list\n")
+        print(f"  可用规则: auditize rules list\n")
         return
     print_banner()
 
@@ -338,7 +338,7 @@ def print_explain(rule_id: str):
 def print_rules_list(category: str = None):
     """列出所有规则"""
     print_banner()
-    print(f"  TruffleKit 规则库 ({len(RULES)} 条)")
+    print(f"  Auditize 规则库 ({len(RULES)} 条)")
     print(f"  {'─' * max(TERM_WIDTH - 4, 30)}")
     print()
 
@@ -362,7 +362,7 @@ def print_rules_list(category: str = None):
             print(f"    {sev_icon}  {r['id']:8s}  {r['severity']:8s}  {r['title'][:40]:40s}")
         print()
 
-    print(f"  查看规则详情:  truffle explain SEC-001")
+    print(f"  查看规则详情:  auditize explain SEC-001")
     print(f"  参考来源均来自 OWASP / CVE / 官方文档")
     print()
 
@@ -374,7 +374,7 @@ def print_fix_done(project_root: Path, count: int):
     pname = project_root.name if isinstance(project_root, Path) else str(project_root)
     if count > 0:
         print(f"\n  ✅ 已标记 {count} 项为已修复")
-        print(f"  下次扫描将不再显示这些项:  truffle scan {pname}")
+        print(f"  下次扫描将不再显示这些项:  auditize scan {pname}")
     else:
         print(f"\n  未找到匹配项")
     print()

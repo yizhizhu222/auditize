@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "truffle-scan"
+name = "auditize-cli"
 version = "0.1.1"
 description = "Deterministic security scanner for AI-generated projects. Scan any project, get a prioritized action plan — so you review 3 files instead of 300."
 readme = "README.md"
@@ -11,7 +11,7 @@ requires-python = ">=3.8"
 license = { text = "MIT" }
 keywords = ["security", "audit", "code-review", "ai", "static-analysis"]
 authors = [
-    { name = "TruffleKit" },
+    { name = "Auditize" },
 ]
 
 classifiers = [
@@ -31,12 +31,12 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://trufflekit.com"
-Source = "https://github.com/trufflekit/truffle"
-Documentation = "https://github.com/trufflekit/truffle/tree/main/cli/rules"
+Homepage = "https://github.com/yizhizhu222/auditize"
+Source = "https://github.com/yizhizhu222/auditize"
+Documentation = "https://github.com/yizhizhu222/auditize/tree/main/cli/rules"
 
 [project.scripts]
-truffle = "cli.main:main"
+auditize = "cli.main:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["cli"]
@@ -47,3 +47,12 @@ include = [
     "scripts/",
     "README.md",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[project.optional-dependencies]
+test = ["pytest>=7.0"]
+dev = ["pytest>=7.0", "build", "twine"]

@@ -1,6 +1,6 @@
 """
-TruffleKit 扫描规则库
-====================
+Auditize 扫描规则库
+==================
 每条规则包含：
   - id:        规则编号 (SEC-XXX)
   - category:  分类
@@ -33,7 +33,7 @@ SKIP_DIRS = {
     "demo",          # 刻意包含不安全代码的 demo 目录
     "yizhizhu",      # 用户个人笔记（可能含示例密码）
     "legacy_backup", # 备份目录
-    "Truffle",       # 项目内嵌的完整备份副本（避免重复扫描）
+    "Auditize",      # 项目内嵌的完整备份副本（避免重复扫描）
 }
 
 SKIP_FILE_EXT = {
@@ -153,10 +153,11 @@ def check_hardcoded_secrets(root: Path):
                 for m in re.finditer(pat, content):
                     ln = content[:m.start()].count("\n") + 1
                     line_text = content.splitlines()[ln - 1] if ln <= len(content.splitlines()) else ""
-                    # 在测试文件中跳过 test/example 密码
-                    if "password" in label.lower() and "test" in str(fp).lower():
-                        if re.search(r"(test|fake|example|placeholder|dummy|your-|YOUR_)", line_text, re.I):
-                            continue
+                    # 在测试文件/示例文件中跳过 placeholder 密码
+                    if "test" in str(fp).lower():
+                        if re.search(r"(password|passwd|secret|token|key)", line_text, re.I):
+                            if re.search(r"(test|fake|example|placeholder|dummy|your-)", line_text, re.I):
+                                continue
                     issues.append(make_finding(
                         _rel(fp, root), ln, m.group()[:60],
                         severity=sev, rule_id="SEC-001",

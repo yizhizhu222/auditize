@@ -1,9 +1,9 @@
-# 🍄 TruffleKit CLI
+# 🛡️ Auditize CLI
 
 **AI 项目确定性安全审查工具 — 告诉你要从哪里看起，而不是丢给你一个列表。**
 
 ```
-$ truffle scan .
+$ auditize scan .
 
   健康度   ████████░░  B  (72/100)
   
@@ -18,7 +18,7 @@ $ truffle scan .
 ## 安装
 
 ```bash
-pip install trufflekit
+pip install auditize-cli
 ```
 
 不需要任何第三方依赖，不需要 AI 模型，不需要 API Key。
@@ -34,67 +34,67 @@ pip install trufflekit
 cd my-awesome-project
 
 # 扫一遍
-truffle scan .
+auditize scan .
 
 # 看看具体要修什么
-truffle scan . --plan
+auditize scan . --plan
 
 # 修完标记一下
-truffle fix .
+auditize fix .
 
 # 再扫一遍，确认干净了
-truffle scan .
+auditize scan .
 ```
 
 ---
 
 ## 所有命令
 
-### `truffle scan` — 扫描项目
+### `auditize scan` — 扫描项目
 
 | 用法 | 说明 |
 |---|---|
-| `truffle scan .` | 默认模式：健康度条 + 关键问题 + 其余折叠 |
-| `truffle scan /path/to/project` | 扫描指定项目 |
-| `truffle scan . --plan` | **行动计划**：清单式「先修这 3 项，再修这 2 项」 |
-| `truffle scan . --verbose` | 展开全部发现项 |
-| `truffle scan . --quick` | 快速模式：只扫 critical / high / medium |
-| `truffle scan . --json` | JSON 输出（给 CI 集成） |
-| `truffle scan . --no-cache` | 忽略修复记录，重新显示全部 |
+| `auditize scan .` | 默认模式：健康度条 + 关键问题 + 其余折叠 |
+| `auditize scan /path/to/project` | 扫描指定项目 |
+| `auditize scan . --plan` | **行动计划**：清单式「先修这 3 项，再修这 2 项」 |
+| `auditize scan . --verbose` | 展开全部发现项 |
+| `auditize scan . --quick` | 快速模式：只扫 critical / high / medium |
+| `auditize scan . --json` | JSON 输出（给 CI 集成） |
+| `auditize scan . --no-cache` | 忽略修复记录，重新显示全部 |
 
 输出内容：
 - **健康度条 + 等级 (A/B/C/D)** — 一眼知道项目状态
 - **严重等级分组** — 必须修 / 建议修 / 可忽略
 - **每条含**: 行号、代码片段、修复建议、参考来源
 
-### `truffle fix` — 修复追踪
+### `auditize fix` — 修复追踪
 
 | 用法 | 说明 |
 |---|---|
-| `truffle fix .` | 标记当前所有问题为已修复 |
-| `truffle fix . --status` | 查看修复进度 |
-| `truffle fix . --reset` | 重置修复记录 |
+| `auditize fix .` | 标记当前所有问题为已修复 |
+| `auditize fix . --status` | 查看修复进度 |
+| `auditize fix . --reset` | 重置修复记录 |
 
-修复记录保存在项目根目录的 `.truffle/status.json` 中，可提交到 Git 让团队共享进度。
+修复记录保存在项目根目录的 `.auditize/status.json` 中，可提交到 Git 让团队共享进度。
 
-### `truffle explain` — 规则详解
+### `auditize explain` — 规则详解
 
 ```bash
-truffle explain SEC-001
+auditize explain SEC-001
 ```
 
 查看某条规则的完整说明：为什么是问题、怎么修、OWASP 参考链接、验证方法。
 
-### `truffle rules` — 规则列表
+### `auditize rules` — 规则列表
 
 ```bash
-truffle rules list
-truffle rules list --category Secret  # 按分类筛选
+auditize rules list
+auditize rules list --category Secret  # 按分类筛选
 ```
 
 列出所有 22 条扫描规则及其严重等级。
 
-### `truffle version`
+### `auditize version`
 
 查看版本号。
 
@@ -133,7 +133,7 @@ truffle rules list --category Secret  # 按分类筛选
 
 ## 信任机制
 
-TruffleKit CLI 的信任建立在**透明度**上，而非品牌：
+Auditize CLI 的信任建立在**透明度**上，而非品牌：
 
 1. **确定性规则** — 纯正则匹配，无 AI 幻觉。每条发现你都可以在对应行号处自行验证
 2. **规则开源** — 所有规则以 Markdown 格式放在 `cli/rules/`，写明了检测逻辑和验证方法
@@ -153,13 +153,13 @@ TruffleKit CLI 的信任建立在**透明度**上，而非品牌：
 
 ## 和市面上其他工具的区别
 
-| | TruffleKit | Snyk | Semgrep | linter |
+| | Auditize | Snyk | Semgrep | linter |
 |---|---|---|---|---|
 | 安装 | `pip install` | 注册账号 | `pip install` | 语言特定 |
 | 规则是否开源 | ✅ 全部开源 | ❌ 部分付费 | ✅ 开源 | ✅ |
 | 是否有 AI 幻觉 | ❌ 完全无 | ❌ | ❌ | ❌ |
 | 是否有行动计划 | ✅ `--plan` | ❌ | ❌ | ❌ |
-| 是否有修复追踪 | ✅ `truffle fix` | ❌ | ❌ | ❌ |
+| 是否有修复追踪 | ✅ `auditize fix` | ❌ | ❌ | ❌ |
 | 是否面向 AI 生成代码 | ✅ 是 | ❌ 传统项目 | ❌ 通用 | ❌ 语法级 |
 
 ---

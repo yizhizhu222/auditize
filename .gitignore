@@ -8,6 +8,10 @@
 !/.gitignore
 !/.gitattributes
 !/.github/
+!/tests/
+!/.pre-commit-hooks.yaml
+!/.pre-commit-config.yaml
+!/CONTRIBUTING.md
 
 # Python 构建产物
 __pycache__/
@@ -17,7 +21,8 @@ __pycache__/
 dist/
 build/
 
-# TruffleKit 本地状态
+# Auditize 本地状态
+.auditize/
 .truffle/
 
 # 开发/系统文件

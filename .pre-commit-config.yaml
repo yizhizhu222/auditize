@@ -1,0 +1,16 @@
+# ── Auditize pre-commit hook ──────────────────────────────────
+# Run `auditize scan . --quick` on staged files before commit.
+# Requires `auditize` to be installed (`pip install auditize`).
+# ──────────────────────────────────────────────────────────────
+repos:
+  - repo: https://github.com/yizhizhu222/auditize
+    rev: v0.1.1
+    hooks:
+      - id: auditize-scan
+        name: Auditize security scan
+        description: "Run Auditize security scan on staged files"
+        entry: auditize scan .
+        language: python
+        types: [python]
+        stages: [pre-commit]
+        pass_filenames: false

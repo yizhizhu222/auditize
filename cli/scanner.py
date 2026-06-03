@@ -1,6 +1,6 @@
 """
-TruffleKit 扫描引擎
-==================
+Auditize 扫描引擎
+================
 运行所有规则并汇总结果。支持进度追踪（标记已修复后不再显示）。
 """
 
@@ -12,13 +12,13 @@ from collections import defaultdict
 
 from .rules import RULES, RULE_MAP
 
-TRUFFLE_DIR = ".truffle"
+AUDITIZE_DIR = ".auditize"
 STATUS_FILE = "status.json"
 
 
 def get_status_path(project_root: Path) -> Path:
     """获取项目的 .truffle/status.json 路径"""
-    p = project_root / TRUFFLE_DIR
+    p = project_root / AUDITIZE_DIR
     p.mkdir(exist_ok=True)
     return p / STATUS_FILE
 
@@ -157,7 +157,7 @@ def _is_scanner_false_positive(finding: dict, project_root: Path) -> bool:
         return True
 
     # 完全匹配的旧式 standalone 文件
-    if filepath in ("truffle-audit.py", "truffle-scan.py", "scan.py"):
+    if filepath in ("auditize-audit.py", "auditize-scan.py", "scan.py"):
         return True
 
     # 检查源文件是否包含 @register（说明是扫描器自身的规则定义文件，不是生产代码）

@@ -1,6 +1,6 @@
 # Security Policy
 
-## What TruffleKit CLI Scans For
+## What Auditize CLI Scans For
 
 The CLI checks for 22 categories of issues across your project. All rules are deterministic (no AI), open source, and OWASP-referenced.
 
@@ -8,7 +8,7 @@ The CLI checks for 22 categories of issues across your project. All rules are de
 
 ## Reporting a Vulnerability
 
-If you find a vulnerability in the TruffleKit CLI itself (not in a project being scanned):
+If you find a vulnerability in the Auditize CLI itself (not in a project being scanned):
 
 1. **Do not** open a public GitHub issue
 2. Email: cjwd1234cjwd@163.com
@@ -16,11 +16,11 @@ If you find a vulnerability in the TruffleKit CLI itself (not in a project being
 
 ## False Positives
 
-TruffleKit is designed to prefer false negatives over false positives. If you encounter a false positive:
+Auditize is designed to prefer false negatives over false positives. If you encounter a false positive:
 
-1. Run `truffle explain <RULE_ID>` to understand the rule
+1. Run `auditize explain <RULE_ID>` to understand the rule
 2. Check if the file is being correctly identified
-3. Use `truffle fix . --file <path>` to mark it as reviewed
+3. Use `auditize fix . --file <path>` to mark it as reviewed
 
 ## Responsible Use
 
