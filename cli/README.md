@@ -181,8 +181,20 @@ cli/
 └── README.md        # 本文件
 ```
 
----
-
 ## License
 
 MIT
+
+---
+
+## 🌐 网页平台
+
+本仓库同时包含 **Truffle AI 网页平台** —— 全栈 AI 代码生成 + 安全扫描 + 团队协作应用。
+
+| 组件 | 目录 | 技术栈 |
+|------|------|--------|
+| 前端 | [`website/frontend/`](/website/frontend/) | React + TypeScript + Vite + Tailwind |
+| 后端 | [`website/backend/`](/website/backend/) | FastAPI + Python + SQLite |
+| 部署 | [`website/deploy/`](/website/deploy/) | Docker Compose + Nginx |
+
+👉 [平台文档](/website/docs/README.md)

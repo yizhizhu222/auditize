@@ -1,8 +1,10 @@
-# Nexus AI Platform v2
+# Truffle AI Platform
 
 > **面向小团队的"需求→审核→开发→资产"协作平台**
-> 
+>
 > 非技术人提需求，技术人审核，AI 生成代码，系统防重复开发。
+
+🌐 [trufflekit.com](https://trufflekit.com)
 
 ---
 
@@ -69,7 +71,7 @@
 ### 1. 启动后端
 
 ```bash
-cd platform-backend
+cd backend
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
@@ -79,20 +81,28 @@ uvicorn app.main:app --reload
 ### 2. 启动前端
 
 ```bash
-cd "Nexus AI"
+cd frontend
 npm install
 npm run dev
 ```
 
 访问 http://localhost:5173。
 
-### 3. 默认管理员账号
+### 3. 一键启动（开发环境）
+
+```bash
+./start.sh
+```
+
+自动构建前端 → 启动后端 (:8001) + 管理后台 (:8002) + Cloudflare Tunnel。
+
+### 4. 默认管理员账号
 
 | 用户名 | 密码 | 角色 |
 |-------|------|------|
 | `admin` | `admin123` | admin |
 
-### 4. 使用步骤
+### 5. 使用步骤
 
 | 步骤 | 操作 |
 |------|------|
@@ -111,70 +121,76 @@ npm run dev
 
 ```
 Truffle/
-├── logs/                               # 统一日志目录（所有服务日志集中于此）
+├── cli/                                # Auditize CLI 安全扫描工具
+│   └── ...
 │
-├── Nexus AI/                          # 前端 (Vite + React + TypeScript + Tailwind)
-│   └── src/
-│       ├── components/                # React 组件
-│       │   ├── LandingPage.tsx         # 🆕 产品首页（/）
-│       │   ├── Login.tsx              # 登录/注册（/login）
-│       │   ├── Dashboard.tsx          # 主工作台骨架
-│       │   ├── Sidebar.tsx            # 导航侧栏
-│       │   ├── TeamPage.tsx           # 团队需求看板
-│       │   ├── AssetLibrary.tsx       # 代码资产库（含团队筛选）
-│       │   ├── MainPage.tsx           # AI 代码生成
-│       │   ├── SafetyReport.tsx       # 安全报告展示
-│       │   ├── ReviewPage.tsx         # 专家审核（含 Stripe 支付）
-│       │   ├── AdminPage.tsx          # 管理员面板（审核 + 用户管理）
-│       │   ├── SettingsPage.tsx       # 设置（API Key + 主题）
-│       │   └── ErrorBoundary.tsx      # 错误边界
-│       └── context/
-│           ├── LanguageContext.tsx     # 中英文切换
-│           ├── SettingsContext.tsx     # API Key + 模型列表
-│           ├── ThemeContext.tsx        # 主题/字体管理
-│           └── ToastContext.tsx        # Toast 通知
+├── website/                            # 网页平台（本目录）
+│   ├── logs/                           # 统一日志目录
+│   │
+│   ├── frontend/                       # 前端 (Vite + React + TypeScript + Tailwind)
+│   │   └── src/
+│   │       ├── components/
+│   │       │   ├── LandingPage.tsx      # 产品首页（/）
+│   │       │   ├── Login.tsx            # 登录/注册（/login）
+│   │       │   ├── Dashboard.tsx        # 主工作台骨架
+│   │       │   ├── Sidebar.tsx          # 导航侧栏
+│   │       │   ├── TeamPage.tsx         # 团队需求看板
+│   │       │   ├── AssetLibrary.tsx     # 代码资产库（含团队筛选）
+│   │       │   ├── MainPage.tsx         # AI 代码生成
+│   │       │   ├── SafetyReport.tsx     # 安全报告展示
+│   │       │   ├── ReviewPage.tsx       # 专家审核（含 Stripe 支付）
+│   │       │   ├── AdminPage.tsx        # 管理员面板（审核 + 用户管理）
+│   │       │   ├── SettingsPage.tsx     # 设置（API Key + 主题）
+│   │       │   └── ErrorBoundary.tsx    # 错误边界
+│   │       └── context/
+│   │           ├── LanguageContext.tsx   # 中英文切换
+│   │           ├── SettingsContext.tsx   # API Key + 模型列表
+│   │           ├── ThemeContext.tsx      # 主题/字体管理
+│   │           └── ToastContext.tsx      # Toast 通知
+│   │
+│   ├── backend/                        # 后端 (FastAPI + Python)
+│   │   └── app/
+│   │       ├── main.py                 # 入口 + 路由注册
+│   │       ├── admin_app.py            # 管理后台 (:8002，仅本地)
+│   │       ├── db.py                   # 统一数据库
+│   │       ├── auth/auth.py            # 认证 (JWT + TOTP)
+│   │       ├── scanner/                # 安全扫描引擎
+│   │       │   ├── static_analyzer.py  # Python/JS/Go/C++ 静态分析
+│   │       │   └── reporter.py         # 人类可读报告生成
+│   │       └── api/
+│   │           ├── generate.py         # 需求→代码生成
+│   │           ├── scan.py             # 代码安全扫描
+│   │           ├── review.py           # 专家审核（含支付状态）
+│   │           ├── payment.py          # Stripe Checkout 支付
+│   │           ├── assets.py           # 代码资产库 + 重复检测
+│   │           ├── chat.py             # AI 聊天代理
+│   │           ├── chat_history.py     # 聊天会话历史
+│   │           ├── compile.py          # 代码沙箱
+│   │           ├── settings.py         # 用户设置
+│   │           ├── admin.py            # 管理员（用户管理）
+│   │           └── routes.py           # 健康检查 + 版本
+│   │
+│   ├── deploy/                         # 部署配置
+│   │   ├── docker-compose.yml
+│   │   ├── Dockerfile.tunnel
+│   │   ├── nginx.conf
+│   │   ├── setup.sh
+│   │   └── tunnel-config.yml
+│   │
+│   ├── docs/                           # 文档（本文件所在目录）
+│   │   ├── README.md                   # 本文档
+│   │   ├── CHANGELOG.md
+│   │   ├── OPS.md
+│   │   └── yizhizhu/                   # 开发笔记
+│   │
+│   ├── assets/                         # 素材
+│   ├── demo/                           # 演示
+│   ├── logs/                           # 日志
+│   │
+│   ├── start.sh                        # 一键启动（生产模式）
+│   └── dev.sh                          # 开发模式启动
 │
-├── platform-backend/                  # 后端 (FastAPI + Python)
-│   └── app/
-│       ├── main.py                    # 入口 + 路由注册
-│       ├── db.py                      # 统一数据库（含 auth + chat 表）
-│       ├── auth/auth.py               # 认证 (JWT + TOTP)
-│       ├── scanner/                   # 安全扫描引擎
-│       │   ├── static_analyzer.py     # Python/JS/Go/C++ 静态分析
-│       │   └── reporter.py            # 人类可读报告生成
-│       └── api/
-│           ├── generate.py            # 需求→代码生成
-│           ├── scan.py                # 代码安全扫描
-│           ├── review.py              # 专家审核（含支付状态）
-│           ├── payment.py             # 🆕 Stripe Checkout 支付
-│           ├── assets.py              # 代码资产库 + 重复检测
-│           ├── chat.py                # AI 聊天代理
-│           ├── chat_history.py        # 聊天会话历史
-│           ├── compile.py             # 代码沙箱
-│           ├── settings.py            # 用户设置
-│           ├── admin.py               # 管理员（用户管理）
-│           └── routes.py              # 健康检查 + 版本
-│
-├── deploy/                            # 部署配置
-│   ├── docker-compose.yml
-│   ├── Dockerfile.tunnel
-│   ├── nginx.conf
-│   ├── setup.sh
-│   └── tunnel-config.yml
-│
-├── docs/                              # 文档
-│   ├── README.md
-│   ├── CHANGELOG.md
-│   ├── OPS.md
-│   ├── CODE_MAP.md
-│   └── yizhizhu/                      # 中文笔记
-│
-├── assets/                            # 素材
-│   └── 猪猪.png
-│
-├── demo/                              # 演示
-│
-└── logs/                              # 日志
+└── ...                                 # CLI 相关文件
 ```
 
 ---
@@ -228,7 +244,7 @@ Truffle/
 
 所有 API 前缀为 `/api/v1`，认证方式为 JWT Bearer Token。
 
-### 核心功能（v2 新增）
+### 核心功能
 
 | 方法 | 路径 | 说明 | 认证 |
 |------|------|------|------|
@@ -293,9 +309,9 @@ Truffle/
 
 ## 🗄️ 数据库
 
-项目使用 **单个 SQLite 数据库** `app.db`，位于 `platform-backend/data/`。
+项目使用 **单个 SQLite 数据库** `app.db`，位于 `backend/data/`。
 
-> ⚡ v2.2 已将原本的 `auth.db` 和 `chat_history.db` 合并到 `app.db`。首次启动会自动迁移遗留数据，迁移完成后旧文件可安全删除。
+> ⚡ 已将原本分散的 `auth.db` 和 `chat_history.db` 合并到 `app.db`。首次启动会自动迁移遗留数据，迁移完成后旧文件可安全删除。
 
 ### `app.db` — 统一数据库
 
@@ -318,7 +334,7 @@ Truffle/
 
 ## 🔐 安全扫描引擎
 
-这是项目的核心差异化功能。位于 `platform-backend/app/scanner/`。
+这是平台的核心差异化功能。位于 `backend/app/scanner/`。
 
 ### 支持语言
 
@@ -362,7 +378,7 @@ Truffle/
 
 ## 👥 专家审核流程
 
-审核是平台的商业模式（未来可付费使用）。
+审核是平台的商业模式。
 
 ### 用户视角
 
@@ -387,6 +403,7 @@ Truffle/
 ### Docker Compose（推荐）
 
 ```bash
+cd deploy
 docker compose up -d
 ```
 
@@ -403,7 +420,7 @@ docker compose up -d
 
 ### 环境变量
 
-在根目录 `.env` 中配置：
+在 `backend/.env` 中配置：
 
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
@@ -416,6 +433,10 @@ docker compose up -d
 | `STRIPE_PUBLISHABLE_KEY` | `pk_live_...` | Stripe 公钥 |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` | Stripe Webhook 签名密钥 |
 | `PAYMENT_PRICE_USD` | `999` | 每次审核价格（美分） |
+
+### Cloudflare Tunnel
+
+`start.sh` 会自动读取 `backend/.env` 中的 `TUNNEL_TOKEN` 启动 Cloudflare Tunnel，将本地服务暴露到 `trufflekit.com`。
 
 ---
 
@@ -476,19 +497,16 @@ docker compose up -d
 
 ### Q: 数据库在哪里？
 
-单个 SQLite 文件 `platform-backend/data/app.db`。删除它再重启会自动重建（包括 admin 用户）。
-
-> v2.2 已合并：原本的 `auth.db`（认证）和 `chat_history.db`（聊天历史）已全部合并到 `app.db`。
+单个 SQLite 文件 `backend/data/app.db`。删除它再重启会自动重建（包括 admin 用户）。
 
 ### Q: 日志文件在哪里？
 
-所有日志统一在项目根目录 `logs/` 下：
+所有日志统一在 `website/logs/` 下：
 - `backend-app.log` — Python 应用运行日志
 - `backend-uvicorn.log` — 后端服务启动日志
 - `frontend-dev.log` — 前端开发服务器日志
 - `frontend-build.log` — 前端构建日志
 - `tunnel.log` — Cloudflare Tunnel 日志
-- `docker-build.log` — Docker 构建日志
 
 ### Q: 如何创建其他管理员账号？
 
@@ -498,7 +516,7 @@ docker compose up -d
 
 1. 登录后去 Settings → 暂无 TOTP 设置 UI
 2. 可以通过 API 调用 `POST /api/v1/auth/totp/setup` 获取密钥
-  
+
 ---
 
 ## ✅ 功能状态一览
@@ -514,7 +532,7 @@ docker compose up -d
 | 删除账号 | ✅ 后端就绪 |
 | OAuth 连接 | ❌ Mock 实现，无真实 OAuth |
 
-### 团队管理 ✅
+### 团队管理
 
 | 功能 | 状态 |
 |------|------|
@@ -524,7 +542,7 @@ docker compose up -d
 | 邀请码 (仅 owner 可见) | ✅ |
 | Dashboard 多团队摘要 | ✅ |
 
-### 需求看板 ✅
+### 需求看板
 
 | 功能 | 状态 |
 |------|------|
@@ -534,7 +552,7 @@ docker compose up -d
 | 审核批准/拒绝/标记重复 | ✅ |
 | 审核后一键关联生成任务 | ✅ |
 
-### AI 代码生成 ⚠️
+### AI 代码生成
 
 | 功能 | 状态 |
 |------|------|
@@ -542,9 +560,8 @@ docker compose up -d
 | 4 语言 (Python/JS/Go/C++) | ✅ |
 | 多模型 (OpenAI/DeepSeek/Anthropic/OpenRouter) | ✅ |
 | 生成后自动安全扫描 | ✅ |
-| 生成质量优化 | 🔴 未深入 |
 
-### 安全扫描 ✅
+### 安全扫描
 
 | 功能 | 状态 |
 |------|------|
@@ -554,20 +571,20 @@ docker compose up -d
 | 修复建议 | ✅ |
 | 项目级 ZIP 扫描 | 🔴 未实现 |
 
-### 代码资产库 ✅
+### 代码资产库
 
 | 功能 | 状态 |
 |------|------|
 | SHA256 去重保存 | ✅ |
-| 列表/搜索/语言筛选/团队筛选 🆕 | ✅ |
+| 列表/搜索/语言筛选/团队筛选 | ✅ |
 | 相似度检测 | ✅ |
 
-### 专家审核 + 支付 ⚠️
+### 专家审核 + 支付
 
 | 功能 | 状态 |
 |------|------|
 | 提交审核、查看、管理员决定 | ✅ |
-| Stripe Checkout 支付 🆕 | ⚠️ 代码就绪，需配置 `STRIPE_SECRET_KEY` |
+| Stripe Checkout 支付 | ⚠️ 代码就绪，需配置 `STRIPE_SECRET_KEY` |
 | 定价模型 | 💲 预设 $9.99/次，环境变量可调 |
 
 ### 管理后台
@@ -575,17 +592,17 @@ docker compose up -d
 | 功能 | 状态 |
 |------|------|
 | 审核面板 (Pending/History) | ✅ |
-| 用户管理 (列表/角色/删除) 🆕 | ✅ |
+| 用户管理 (列表/角色/删除) | ✅ |
 
 ### 首页
 
 | 功能 | 状态 |
 |------|------|
-| 公开 Landing Page (`/`) 🆕 | ✅ |
+| 公开 Landing Page (`/`) | ✅ |
 | 登录页 (`/login`) | ✅ |
 | 无团队引导创建 | ✅ |
 
-### PWA 🆕
+### PWA
 
 | 功能 | 状态 |
 |------|------|
@@ -593,7 +610,7 @@ docker compose up -d
 | manifest + 手机添加到主屏幕 | ✅ |
 | 全屏沉浸模式 | ✅ |
 
-### 通知系统 🆕
+### 通知系统
 
 | 功能 | 状态 |
 |------|------|
@@ -602,22 +619,21 @@ docker compose up -d
 | 下拉通知面板 + 全部已读 | ✅ |
 | 邮件/推送通知 | 🔴 未实现 |
 
-### 引导导览 🆕
+### 引导导览
 
 | 功能 | 状态 |
 |------|------|
 | 5 步分步导览 (GuidedTour) | ✅ |
 | 中英文双语 | ✅ |
 | 上一步/跳过/完成 | ✅ |
-| 全英文 UI | ✅ |
 
 ---
 
 ## 📝 关于项目
 
-Nexus AI Platform v2 是对原本 v1 的大规模重构，砍掉了团队聊天、项目管理、文件 IDE 等冗余功能，聚焦于 **需求→审核→生成→资产** 协作流程。
+Truffle AI Platform 是对原本 Nexus AI v1 的大规模重构，砍掉了团队聊天、项目管理、文件 IDE 等冗余功能，聚焦于 **需求→审核→生成→资产** 协作流程。
 
-### v2 相比 v1 删除的内容
+### 相比 v1 删除的内容
 
 | 删除项 | 原因 |
 |-------|------|

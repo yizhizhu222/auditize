@@ -228,6 +228,18 @@ jobs:
 - [Rule Library](cli/rules/README.md) — all 22 rules documented
 - [Publishing Guide](cli/PUBLISH.md) — PyPI release process
 
+## Web Platform
+
+This repo also hosts the **Truffle Web Platform** — a full-stack AI code generation, security scanning, and team collaboration app.
+
+| Component | Directory | Stack |
+|-----------|-----------|-------|
+| Frontend  | [`website/frontend/`](website/frontend/) | React + TypeScript + Vite + Tailwind |
+| Backend   | [`website/backend/`](website/backend/)   | FastAPI + Python + SQLite |
+| Deploy    | [`website/deploy/`](website/deploy/)     | Docker Compose + Nginx |
+
+👉 [Platform Docs](website/docs/README.md) (Chinese)
+
 ## Development
 
 ```bash
