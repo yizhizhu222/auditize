@@ -232,6 +232,9 @@ jobs:
 
 This repo also hosts the **Truffle Web Platform** — a full-stack AI code generation, security scanning, and team collaboration app.
 
+> ⚠️ **This repository contains the architecture skeleton of the web platform.**  
+> The full implementation (AI code generation, security scanning engine, Stripe payments, authentication logic) is available upon purchase.
+
 | Component | Directory | Stack |
 |-----------|-----------|-------|
 | Frontend  | [`website/frontend/`](website/frontend/) | React + TypeScript + Vite + Tailwind |
